@@ -1,0 +1,90 @@
+﻿@startuml classDiagram
+
+class Sistema {
+
+    - socios : List<Socio>
+
+    + getListadoSocios(criterio : CriterioSocio, orden : Orden) : List<Socio>
+}
+
+class Socio {
+
+    - nombre : String
+    - apellido : String
+    - edad : int
+    - ultimaCuotaPaga : boolean
+    - alquileres : List<Alquileres>
+
+    + getNombre() : String
+    + getApellido() : String
+    + getEdad() : String
+    + tieneUltimaCuotaPaga() : boolean
+    + getAlquileres(criterio : CriterioAlquiler) : List<Alquileres> 
+    + getNumeroAlquileres(criterio : CriterioAlquiler) : int
+}
+
+class Alquiler {
+
+    - ID : int
+    - monto : double
+    - fecha : LocalDate
+
+    + getID() : int
+    + getFecha() : LocalDate
+}
+
+abstract class CriterioSocio {
+    + {abstract} cumple(socio : Socio) : boolean
+}
+
+CriterioSocio <|-- CriterioCuotaPaga
+class CriterioCuotaPaga {
+}
+
+CriterioSocio <|-- CriterioEdad
+class CriterioEdad {
+    - edad : int
+    - comparador : Comparador
+}
+
+CriterioSocio <|-- CriterioSobreAlquiler
+class CriterioSobreAlquiler {
+    - criterio : CriterioSobreAlquiler
+}
+
+CriterioSocio <|-- CriterioCombinado
+class CriterioCombinado {
+    - primerCriterio : CriterioUsuario
+    - segundoCriterio : CriterioUsuario
+}
+
+abstract class CriterioAlquiler {
+    + {abstract} cumple(alquiler : Alquiler) : boolean
+}
+
+
+
+CriterioAlquiler <|-- CriteriaCanchaAlquilada
+abstract class CriterioCanchaAlquilada {
+    - IDCancha : int
+    - nroAlquileres : int
+    - comparador : Comparador
+}
+
+CriterioAlquiler <|-- CriteriaMontoPagado
+abstract class CriterioMontoPagado {
+    - monto : double
+    - comparador : Comparador
+}
+
+Comparator <|.. Orden
+abstract class Orden {
+    + {abstract} compare(s1, s2 : Socio) : int
+}
+
+Orden <|-- OrdenEdad
+class OrdenEdad {
+    - comparador : Comparador
+}
+
+@enduml

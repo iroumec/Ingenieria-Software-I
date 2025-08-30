@@ -1,0 +1,95 @@
+﻿@startuml classDiagram
+
+class Candidato {
+
+    - nombre : String
+    - partidoPolitico : String
+    - agrupacion : String
+}
+
+class PuntoDeVotacion {
+    + getPorcentajeVotosCandidato(candidato : String) : double
+    + getPorcentajeVotosEnBlanco() : double
+    + getVotosEmitidos
+}
+
+PuntoDeVotacion <|-- Espacio
+class Espacio {
+    - puntosDeVotacion : List<PuntoDeVotacion>
+}
+
+PuntoDeVotacion <|-- Mesa
+class Mesa {
+    - padron : List<String>
+    ' El "String" debe tener formato de DNI.
+    - votos : List<Voto>
+
+    + seHallaEnPadron(DNI : String) : String
+}
+
+class Voto {
+
+    - candidato : String
+    ' Un voto en blanco es simplemente un voto en el que el candidato está vacío.
+    - hora : LocalTime
+
+    + votaPorCandidato(@Nullable candidato : String) : boolean
+}
+
+abstract class CriterioBusqueda {
+    + {abstract} cumple(voto : Voto): boolean
+}
+
+CriterioBusqueda <|-- CriterioCandidato
+class CriterioCandidato {
+    - @Nullable candidato : String
+}
+
+CriterioBusqueda <|-- CriterioHora
+class CriterioHora {
+    - hora : LocalTime
+    - comparador : Comparador
+}
+
+CriterioBusqueda <|-- CriterioNot
+class CriterioNot {
+    - criterio : CriterioBusqueda
+}
+
+CriterioBusqueda <|-- CriterioCombinado
+class CriterioCombinado {
+    - primerCriterio : CriterioBusqueda
+    - segundoCriterio: CriterioBusqueda
+    - operadorLogico: OperadorLogico
+}
+
+abstract class Comparador {
+    + {abstract} comparar(primerValor, segundoValor: int) : boolean
+    + {abstract} comparar(primerValor, segundoValor: double) : boolean
+}
+
+Comparador <|-- ComparadorMayor
+class ComparadorMayor {
+}
+
+Comparador <|-- ComparadorMenor
+class ComparadorMenor {
+}
+
+Comparador <|-- ComparadorIgual
+class ComparadorIgual {
+}
+
+abstract class OperadorLogico {
+    + {abstract} evaluar(primerValor, segundoValor: boolean) : boolean
+}
+
+OperadorLogico <|-- OperadorAnd
+class OperadorAnd {
+}
+
+OperadorLogico <|-- OperadorOr
+class OperadorOr {
+}
+
+@enduml

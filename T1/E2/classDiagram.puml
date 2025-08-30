@@ -1,0 +1,93 @@
+﻿@startuml classDiagram
+
+abstract class Ficha {
+
+    - fortaleza : int
+    - casillerosOcupados: int
+
+    + {abstract} getFortaleza() : int
+    + {abstract} getCasillerosOcupados() : int
+    + {abstract} getPoderDestruccion(): float
+}
+
+Ficha <|-- FichaSimple
+class FichaSimple {
+    - poderDestruccion: int
+}
+
+Ficha <|-- FichaEspecial
+class FichaEspecial {
+}
+
+class Tablero {
+    - puntajeMinimo : int
+    - fichas : List<Ficha>
+
+    + getDificultad() : float
+    + getFichas(criterio : CriterioBusqueda) : List<Ficha>
+}
+
+abstract class CriterioBusqueda {
+    + {abstract} cumple(ficha : Ficha) : boolean
+}
+
+CriterioBusqueda <|-- CriterioPoderDestruccion
+class CriterioEspacioOcupado {
+    - poderDestruccion : float
+    - comparador : Comparador
+}
+
+CriterioBusqueda <|-- CriterioEspacioOcupado
+class CriterioEspacioOcupado {
+    - casillerosOcupados : int
+    - comparador : Comparador
+}
+
+CriterioBusqueda <|-- CriterioFortaleza
+class CriterioFortaleza {
+    - fortaleza : int
+    - comparador : Comparador
+}
+
+CriterioBusqueda <|-- CriterioNot
+class CriterioNot {
+    - criterio : CriterioBusqueda
+}
+
+CriterioBusqueda <|-- CriterioCombinado 
+class CriterioCombinado {
+    - primerCriterio : CriterioBusqueda
+    - segundoCriterio : CriterioBusqueda
+    - operadorLogico : OperadorLogico
+}
+
+abstract class Comparador {
+    + {abstract} comparar(primerValor, segundoValor: int) : boolean
+    + {abstract} comparar(primerValor, segundoValor: double) : boolean
+}
+
+Comparador <|-- ComparadorMayor
+class ComparadorMayor {
+}
+
+Comparador <|-- ComparadorMenor
+class ComparadorMenor {
+}
+
+Comparador <|-- ComparadorIgual
+class ComparadorIgual {
+}
+
+abstract class OperadorLogico {
+    + {abstract} evaluar(primerValor, segundoValor: boolean) : boolean
+}
+
+OperadorLogico <|-- OperadorAnd
+class OperadorAnd {
+}
+
+OperadorLogico <|-- OperadorOr
+class OperadorOr {
+}
+
+@enduml

@@ -1,0 +1,77 @@
+@startuml T1E1
+
+abstract class Expresion {
+	+ {abstract} evaluar(): float
+	+ {abstract} getNumeros(): List<Float>
+	+ {abstract} getOperadores(): List<Operador>
+	+ {abstract} imprimir(): String
+	+ {abstract} getCopia() : Expresion
+	+ {abstract} getOpuesta() : Expresion
+	+ {abstract} getNormalizada(operador : Operador, expresion : Expresion): Expresion
+}
+
+Expresion <|-- Constante
+class Constante {
+	- valor: float
+	+ Constante(valor : float)
+}
+    
+Expresion <|-- Termino
+class Termino {
+	{field}
+	- primerTermino: Expresion
+	- segundoTermino: Expresion
+	- operador: Operador
+	{method}
+	+ Termino(Expresion primerTermino, Expresion segundoTermino, Operador operador)
+}
+    
+abstract class Operador {
+    + {method} {abstract} getResultado(primerTermino, segundoTermino: Expresion): float
+    + {method} {abstract} getOpuesto(): Operador
+    + {method} getSimbolo() : String
+}
+    
+Operador <|-- Suma
+class Suma {
+    - {field} {static} INSTANCE : Suma
+    - {method} Suma()
+    + {method} getInstance(): Suma
+}
+    
+Operador <|-- Resta
+class Resta {
+    - {field} {static} INSTANCE : Resta
+    - {method} Resta()
+    + {method} getInstance(): Resta
+}
+
+Operador <|-- Multiplicacion
+class Multiplicacion {
+	- {field} {static} INSTANCE : Multiplicacion
+    - {method} Multiplicacion()
+    + {method} getInstance(): Multiplicacion
+}
+    
+Operador <|-- Division
+class Division {
+    - {field} {static} INSTANCE : Division
+    - {method} Division()
+    + {method} getInstance(): Division
+}
+
+Operador <|-- Potencia
+class Potencia {
+    - {field} {static} INSTANCE : Potencia
+    - {method} Potencia()
+    + {method} getInstance(): Potencia
+}
+
+Operador <|-- Raiz
+class Raiz {
+    - {field} {static} INSTANCE : Raiz
+    - {method} Raiz()
+    + {method} getInstance(): Raiz
+}
+
+@enduml

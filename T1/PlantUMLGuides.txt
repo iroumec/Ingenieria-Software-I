@@ -1,0 +1,19 @@
+﻿INSTALLATION (DEBIAN):
+
+sudo apt install plantuml
+
+RECOMMENDED:
+
+https://plantuml.com/es-dark/class-diagram
+
+YOU CAN ALSO SEE:
+
+https://www.youtube.com/watch?v=6ywDfXpoTe4
+https://docs.gitlab.com/administration/integration/plantuml/
+
+THEMES:
+
+https://plantuml.com/ru/theme-gallery#84b4d71ab1b6bfbc
+
+Hay patrones que son exactamente lo mismo.
+Solo cambia el contexto o ámbito de aplicación.

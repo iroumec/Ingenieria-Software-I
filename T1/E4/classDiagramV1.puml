@@ -1,0 +1,122 @@
+﻿@startuml classDiagram
+
+class Sistema {
+
+    - peliculas : List<Pelicula>
+    - {field} {static} INSTANCE : OperadorAnd
+
+    - {method} Sistema()
+    + {method} getInstance(): Sistema
+    + buscar(criterio : Criterio) : List<Pelicula>
+}
+
+class Pelicula {
+    - titulo : String
+    - sinopsis : String
+    - generos : List<String>
+    - director : String
+    - actores : List<String>
+    - anioEstreno: int
+    - duracion: double
+    - edadMinima : int
+
+    + esDirigidaPor(director : String) : boolean
+    + participaActor(actor : String) : boolean
+    + tituloContienePalabra(palabra : String) : boolean
+    + getAnioEstreno() : int
+    + getDuracion() : double
+    + getEdadMinima() : int
+    + contieneGenero(genero : String) : boolean
+    + esRentable(criterio : Criterio) : boolean
+}
+
+abstract class CriterioBusqueda {
+    + {abstract} cumple(pelicula : Pelicula) : boolean
+}
+
+CriterioBusqueda <|-- CriterioPalabrasEnTitulo
+class CriterioPalabrasEnTitulo {
+    - palabras : List<String>
+}
+
+CriterioBusqueda <|-- CriterioGeneros
+class CriterioGeneros {
+    - generos : List<String>
+}
+
+CriterioBusqueda <|-- CriterioDirector
+class CriterioDirector {
+    - director : String
+}
+
+CriterioBusqueda <|-- CriterioActores
+class CriterioActores {
+    - actores : List<String>
+}
+
+CriterioBusqueda <|-- CriterioAnioEstreno
+class CriterioAnioEstreno {
+    - anio : int
+    - comparador : Comparador
+}
+
+CriterioBusqueda <|-- CriterioDuracion
+class CriterioDuracion {
+    - double : duracion
+    - comparador : Comparador
+}
+
+CriterioBusqueda <|-- CriterioEdadMinima
+class CriterioEdadMinima {
+    - edad : int
+    - comparador : Comparador
+}
+
+CriterioBusqueda <|-- CriterioNot
+class CriterioNot {
+    - criterio : CriterioBusqueda
+}
+
+CriterioBusqueda <|-- CriterioCombinado
+class CriterioCombinado {
+    - primerCriterio : CriterioBusqueda
+    - segundoCriterio : CriterioBusqueda
+    - operadorLogico : OperadorLogico
+}
+
+abstract class Comparador {
+    + {abstract} comparar(primerValor, segundoValor: int) : boolean
+    + {abstract} comparar(primerValor, segundoValor: double) : boolean
+}
+
+Comparador <|-- ComparadorMayor
+class ComparadorMayor {
+}
+
+Comparador <|-- ComparadorMenor
+class ComparadorMenor {
+}
+
+Comparador <|-- ComparadorIgual
+class ComparadorIgual {
+}
+
+abstract class OperadorLogico {
+    + {abstract} evaluar(primerValor, segundoValor: boolean) : boolean
+}
+
+OperadorLogico <|-- OperadorAnd
+class OperadorAnd {
+    - {field} {static} INSTANCE : OperadorAnd
+    - {method} OperadorAnd()
+    + {method} getInstance(): OperadorAnd
+}
+
+OperadorLogico <|-- OperadorOr
+class OperadorOr {
+    - {field} {static} INSTANCE : OperadorOr
+    - {method} OperadorOr()
+    + {method} getInstance(): OperadorOr
+}
+
+@enduml
