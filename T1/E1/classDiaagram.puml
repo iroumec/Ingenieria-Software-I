@@ -1,5 +1,6 @@
 @startuml T1E1
 
+' Used design pattern: Composite.
 abstract class Expresion {
 	+ {abstract} evaluar(): float
 	+ {abstract} imprimir(): String
@@ -10,68 +11,78 @@ abstract class Expresion {
 	+ {abstract} getNormalizada(operador : Operador, expresion : Expresion): Expresion
 }
 
+' A continuación, los componentes concretos del Composite.
+
 Expresion <|-- Constante
 class Constante {
 	- valor: float
-	+ Constante(valor : float)
 }
-    
+
+' Used design pattern: Template Method.
+' Ya que el método "evaluar()" invoca al método abstracto "getResultado()" de"Operador".
 Expresion <|-- Termino
 class Termino {
-	{field}
 	- primerTermino: Expresion
 	- segundoTermino: Expresion
 	- operador: Operador
-	{method}
-	+ Termino(Expresion primerTermino, Expresion segundoTermino, Operador operador)
 }
-    
+
+' --------------------------------------------------------------------
+
+' Used design pattern: Strategy.
 abstract class Operador {
     + {abstract} getSimbolo() : String
     + {abstract} getOpuesto(): Operador
     + {abstract} getResultado(primerTermino, segundoTermino: Expresion): float
 }
-    
+' La implementación de "getResultado()" concreta el Strategy.
+
+' Used design pattern: Singleton y Factory Method.   
 Operador <|-- Suma
 class Suma {
-    - {field} {static} INSTANCE : Suma
-    - {method} Suma()
-    + {method} getInstance(): Suma
+    - {static} INSTANCE : Suma
+    - Suma()
+    + getInstance(): Suma
 }
-    
+
+' Used design pattern: Singleton y Factory Method.   
 Operador <|-- Resta
 class Resta {
-    - {field} {static} INSTANCE : Resta
-    - {method} Resta()
-    + {method} getInstance(): Resta
+    - {static} INSTANCE : Resta
+    - Resta()
+    + getInstance(): Resta
 }
 
+' Used design pattern: Singleton y Factory Method.   
 Operador <|-- Multiplicacion
 class Multiplicacion {
-	- {field} {static} INSTANCE : Multiplicacion
-    - {method} Multiplicacion()
-    + {method} getInstance(): Multiplicacion
+	- {static} INSTANCE : Multiplicacion
+    - Multiplicacion()
+    + getInstance(): Multiplicacion
 }
-    
+
+' Used design pattern: Singleton y Factory Method.   
 Operador <|-- Division
 class Division {
-    - {field} {static} INSTANCE : Division
-    - {method} Division()
-    + {method} getInstance(): Division
+    - {static} INSTANCE : Division
+    - Division()
+    + getInstance(): Division
 }
 
+' Used design pattern: Singleton y Factory Method.   
 Operador <|-- Potencia
 class Potencia {
-    - {field} {static} INSTANCE : Potencia
-    - {method} Potencia()
-    + {method} getInstance(): Potencia
+    - {static} INSTANCE : Potencia
+    - Potencia()
+    + getInstance(): Potencia
 }
 
+' Used design pattern: Singleton y Factory Method.   
 Operador <|-- Raiz
 class Raiz {
-    - {field} {static} INSTANCE : Raiz
-    - {method} Raiz()
-    + {method} getInstance(): Raiz
+    - {static} INSTANCE : Raiz
+    - Raiz()
+    + getInstance(): Raiz
 }
 
 @enduml

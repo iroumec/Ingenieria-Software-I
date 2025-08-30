@@ -19,6 +19,10 @@
 
 <https://plantuml.com/ru/theme-gallery#84b4d71ab1b6bfbc>
 
+## Considerations
+
+Es posible que haya varios Template Method que me haya salteado en los ejercicios posteriores a E1. Prestar atención a ellos.
+
 ## Theory
 
 Hay patrones que son exactamente lo mismo. Solo cambia el contexto o ámbito de aplicación.
