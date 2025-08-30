@@ -62,8 +62,6 @@ abstract class CriterioAlquiler {
     + {abstract} cumple(alquiler : Alquiler) : boolean
 }
 
-
-
 CriterioAlquiler <|-- CriteriaCanchaAlquilada
 abstract class CriterioCanchaAlquilada {
     - IDCancha : int
@@ -85,6 +83,32 @@ abstract class Orden {
 Orden <|-- OrdenEdad
 class OrdenEdad {
     - comparador : Comparador
+}
+
+abstract class Comparador {
+    + {abstract} comparar(primerValor, segundoValor: int) : boolean
+    + {abstract} comparar(primerValor, segundoValor: double) : boolean
+}
+
+Comparador <|-- ComparadorMayor
+class ComparadorMayor {
+    - {static} INSTANCE : ComparadorMayor
+    - ComparadorMayor()
+    + getInstance(): ComparadorMayor
+}
+
+Comparador <|-- ComparadorMenor
+class ComparadorMenor {
+    - {static} INSTANCE : ComparadorMenor
+    - ComparadorMenor()
+    + getInstance(): ComparadorMenor
+}
+
+Comparador <|-- ComparadorIgual
+class ComparadorIgual {
+    - {static} INSTANCE : ComparadorIgual
+    - ComparadorIgual()
+    + getInstance(): ComparadorIgual
 }
 
 @enduml

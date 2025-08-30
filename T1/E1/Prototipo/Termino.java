@@ -1,4 +1,6 @@
-﻿import java.util.ArrayList;
+﻿package Prototipo;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class Termino extends Expresion {
@@ -13,11 +15,11 @@ public class Termino extends Expresion {
     }
 
     public float evaluar() {
-        return operador.getResultado(this.primerTermino.evaluar(), this.segundoTermino.evaluar());
+        return operador.getResultado(this.primerTermino, this.segundoTermino);
     }
 
-    public List<Float> getNumeros() {
-        List<Float> out = new ArrayList<>(this.primerTermino.getNumeros());
+    public List<Constante> getNumeros() {
+        List<Constante> out = new ArrayList<>(this.primerTermino.getNumeros());
         out.addAll(this.segundoTermino.getNumeros());
         return out;
     }
@@ -41,7 +43,7 @@ public class Termino extends Expresion {
         return new Termino(
                 this.primerTermino.getCopia(),
                 this.segundoTermino.getCopia(),
-                this.operador());
+                this.operador);
     }
 
     public Expresion getOpuesta() {
@@ -51,6 +53,7 @@ public class Termino extends Expresion {
                 this.operador.getOpuesto());
     }
 
+    // No sé si está bien esto. Creo que no.
     public Expresion getNormalizada(Operador operador, Expresion expresion) {
         return new Termino(
                 this.primerTermino.getNormalizada(operador, expresion),

@@ -1,4 +1,4 @@
-﻿@startuml classDiagram
+﻿@startuml classDiagramV1
 
 abstract class Ficha {
 
@@ -32,7 +32,7 @@ abstract class CriterioBusqueda {
 }
 
 CriterioBusqueda <|-- CriterioPoderDestruccion
-class CriterioEspacioOcupado {
+class CriterioPoderDestruccion {
     - poderDestruccion : float
     - comparador : Comparador
 }
@@ -68,14 +68,23 @@ abstract class Comparador {
 
 Comparador <|-- ComparadorMayor
 class ComparadorMayor {
+    - {static} INSTANCE : ComparadorMayor
+    - ComparadorMayor()
+    + getInstance(): ComparadorMayor
 }
 
 Comparador <|-- ComparadorMenor
 class ComparadorMenor {
+    - {static} INSTANCE : ComparadorMenor
+    - ComparadorMenor()
+    + getInstance(): ComparadorMenor
 }
 
 Comparador <|-- ComparadorIgual
 class ComparadorIgual {
+    - {static} INSTANCE : ComparadorIgual
+    - ComparadorIgual()
+    + getInstance(): ComparadorIgual
 }
 
 abstract class OperadorLogico {
@@ -84,10 +93,16 @@ abstract class OperadorLogico {
 
 OperadorLogico <|-- OperadorAnd
 class OperadorAnd {
+    - {static} INSTANCE : OperadorAnd
+    - OperadorAnd()
+    + getInstance(): OperadorAnd
 }
 
 OperadorLogico <|-- OperadorOr
 class OperadorOr {
+    - {static} INSTANCE : OperadorOr
+    - OperadorOr()
+    + getInstance(): OperadorOr
 }
 
 @enduml

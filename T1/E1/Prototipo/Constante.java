@@ -1,4 +1,5 @@
-﻿import java.beans.Expression;
+﻿package Prototipo;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,9 +15,9 @@ public class Constante extends Expresion {
         return valor;
     }
 
-    public List<Float> getNumeros() {
-        List<Float> out = new ArrayList<>();
-        out.add(this.valor);
+    public List<Constante> getNumeros() {
+        List<Constante> out = new ArrayList<>();
+        out.add(this);
         return out;
     }
 

@@ -1,52 +1,51 @@
-﻿@startuml classDiagram
+﻿@startuml classDiagramV2
 
-class Candidato {
+abstract class Ficha {
 
-    - nombre : String
-    - partidoPolitico : String
-    - agrupacion : String
+    - fortaleza : int
+    - casillerosOcupados: int
+
+    + {abstract} getFortaleza() : int
+    + {abstract} getCasillerosOcupados() : int
+    + {abstract} getPoderDestruccion(): float
 }
 
-class PuntoDeVotacion {
-    + getPorcentajeVotosCandidato(candidato : String) : double
-    + getPorcentajeVotosEnBlanco() : double
-    + getVotosEmitidos
+Ficha <|-- FichaSimple
+class FichaSimple {
+    - poderDestruccion: int
 }
 
-PuntoDeVotacion <|-- Espacio
-class Espacio {
-    - puntosDeVotacion : List<PuntoDeVotacion>
+Ficha <|-- FichaEspecial
+class FichaEspecial {
 }
 
-PuntoDeVotacion <|-- Mesa
-class Mesa {
-    - padron : List<Long>
-    - votos : List<Voto>
+class Tablero {
+    - puntajeMinimo : int
+    - fichas : List<Ficha>
 
-    + seHallaEnPadron(DNI : Long) : boolean
-}
-
-class Voto {
-
-    - candidato : String
-    ' Un voto en blanco es simplemente un voto en el que el candidato está vacío.
-    - hora : LocalTime
-
-    + votaPorCandidato(@Nullable candidato : String) : boolean
+    + getDificultad() : float
+    + getFichas(criterio : CriterioBusqueda) : List<Ficha>
 }
 
 abstract class CriterioBusqueda {
-    + {abstract} cumple(voto : Voto): boolean
+    + {abstract} cumple(ficha : Ficha) : boolean
 }
 
-CriterioBusqueda <|-- CriterioCandidato
-class CriterioCandidato {
-    - @Nullable candidato : String
+CriterioBusqueda <|-- CriterioPoderDestruccion
+class CriterioPoderDestruccion {
+    - poderDestruccion : float
+    - comparador : Comparador
 }
 
-CriterioBusqueda <|-- CriterioHora
-class CriterioHora {
-    - hora : LocalTime
+CriterioBusqueda <|-- CriterioEspacioOcupado
+class CriterioEspacioOcupado {
+    - casillerosOcupados : int
+    - comparador : Comparador
+}
+
+CriterioBusqueda <|-- CriterioFortaleza
+class CriterioFortaleza {
+    - fortaleza : int
     - comparador : Comparador
 }
 
@@ -55,11 +54,10 @@ class CriterioNot {
     - criterio : CriterioBusqueda
 }
 
-CriterioBusqueda <|-- CriterioCombinado
+CriterioBusqueda <|-- CriterioCombinado 
 class CriterioCombinado {
     - primerCriterio : CriterioBusqueda
-    - segundoCriterio: CriterioBusqueda
-    - operadorLogico: OperadorLogico
+    - segundoCriterio : CriterioBusqueda
 }
 
 CriterioCombinado <|-- CriterioCombinadoAnd

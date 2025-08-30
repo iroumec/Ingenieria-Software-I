@@ -15,5 +15,6 @@ THEMES:
 
 https://plantuml.com/ru/theme-gallery#84b4d71ab1b6bfbc
 
-Hay patrones que son exactamente lo mismo.
-Solo cambia el contexto o ámbito de aplicación.
+---------------------------------------------------------------------------------------------------
+
+Hay patrones que son exactamente lo mismo. Solo cambia el contexto o ámbito de aplicación.

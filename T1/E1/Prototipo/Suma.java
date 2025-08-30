@@ -2,6 +2,21 @@
 
 public class Suma extends Operador {
 
+    private static Suma INSTANCE;
+
+    private Suma() {
+        // Intentionally empty.
+    }
+
+    public static Suma getInstance() {
+
+        if (INSTANCE == null) {
+            INSTANCE = new Suma();
+        }
+
+        return INSTANCE;
+    }
+
     public float getResultado(Expresion primerTermino, Expresion segundoTermino) {
         return primerTermino.evaluar() + segundoTermino.evaluar();
     }
@@ -10,8 +25,7 @@ public class Suma extends Operador {
         return Resta.getInstance();
     }
 
-    public getSimbolo() {
-		return "+";
+    public String getSimbolo() {
+        return "+";
     }
-
 }

@@ -2,11 +2,11 @@
 
 abstract class Expresion {
 	+ {abstract} evaluar(): float
-	+ {abstract} getNumeros(): List<Float>
-	+ {abstract} getOperadores(): List<Operador>
 	+ {abstract} imprimir(): String
 	+ {abstract} getCopia() : Expresion
 	+ {abstract} getOpuesta() : Expresion
+    + {abstract} getNumeros(): List<Constante>
+	+ {abstract} getOperadores(): List<Operador>
 	+ {abstract} getNormalizada(operador : Operador, expresion : Expresion): Expresion
 }
 
@@ -27,9 +27,9 @@ class Termino {
 }
     
 abstract class Operador {
-    + {method} {abstract} getResultado(primerTermino, segundoTermino: Expresion): float
-    + {method} {abstract} getOpuesto(): Operador
-    + {method} getSimbolo() : String
+    + {abstract} getSimbolo() : String
+    + {abstract} getOpuesto(): Operador
+    + {abstract} getResultado(primerTermino, segundoTermino: Expresion): float
 }
     
 Operador <|-- Suma
