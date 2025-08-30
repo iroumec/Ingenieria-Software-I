@@ -1,0 +1,179 @@
+﻿@startuml E6
+
+' Used design pattern: Composite.
+abstract class Seguro {
+    + getNroPoliza() : int
+    + getCostoPoliza() : double
+    + getMontoAsegurado() : double
+}
+
+Seguro <|-- SeguroSimple
+class SeguroSimple {
+    - nroDNI : int
+    - nroPoliza : int
+    - descripcion : String
+    - montoAsegurado : double
+    - calculadorCosto : Calculador
+}
+
+Seguro <|-- SeguroIntegrador
+class SeguroIntegrador {
+    - seguros : List<Seguro>
+    + agregarSeguro(seguro : Seguro) : boolean
+}
+' Todo seguro que se agregue debe coincidir con el DNI del primer
+' seguro que se haya agregado.
+
+' Used design pattern: Decorator.
+' Encapsula un seguro y le agrega funcionalidad.
+Seguro <|-- SeguroTemporal
+class SeguroTemporal {
+    - seguro : Seguro
+    - fechaFin: LocalDate
+    - fechaInicio : LocalDate
+    + esVigente() : boolean
+}
+
+' -------------------------------------------------------------------
+
+' Used design pattern: Strategy.
+interface Calculador {
+    + getCostoPoliza(seguro : Seguro) : double
+}
+
+Calculador <|.. CalculadorMontoFijo
+class CalculadorMontoFijo {
+    - monto : double
+}
+
+Calculador <|.. CalculadorPorcentajeValorAsegurado
+class CalculadorMontoFijo {
+    - porcentaje : double
+}
+' Se debe corroborar que el porcentaje se halle en el rango (0, 1].
+
+' Used design pattern: Decorator.
+Calculador <|... CalculadorSuma
+class CalculadorSuma {
+
+    - primerCalculador : CalculadorCombinado
+    - segundoCalculador : CalculadorCombinado
+}
+' Podría plantearse una clase "Operador", que, además de la suma, permita
+' multiplicación, división, resta... Pero el problema solo habla de la suma
+' y por eso solo planteé esa clase.
+
+' -------------------------------------------------------------------
+
+' Used design pattern: Strategy.
+interface CriterioBusqueda {
+    + {abstract} cumple(seguro : Seguro) : boolean
+}
+
+CriterioBusqueda <|.. CriterioPalabrasEnDescripcion
+class CriterioPalabrasEnDescripcion {
+    - palabras : List<String>
+}
+
+CriterioBusqueda <|.. CriterioMontoAsegurado
+class CriterioMontoAsegurado {
+    - monto : double
+    - comparador : Comparador
+}
+
+CriterioBusqueda <|.. CriterioDNI
+class CriterioDNI {
+    - nroDNI : int
+    - comparador : Comparador
+}
+
+CriterioBusqueda <|.. CriterioNot
+class CriterioNot {
+    - criterio : CriterioBusqueda
+}
+
+' Used design pattern: Decorator.
+CriterioBusqueda <|.. CriterioCombinado
+class CriterioCombinado {
+    - primerCriterio : CriterioBusqueda
+    - segundoCriterio: CriterioBusqueda
+}
+
+CriterioCombinado <|.. CriterioCombinadoAnd
+class CriterioCombinadoAnd {
+}
+
+CriterioCombinado <|.. CriterioCombinadoOr
+class CriterioCombinadoOr {
+}
+
+' -------------------------------------------------------------------
+
+abstract class Comparador {
+    + {abstract} comparar(primerValor, segundoValor: int) : boolean
+    + {abstract} comparar(primerValor, segundoValor: double) : boolean
+}
+
+' Used design patterns: Singleton y Factory Method.
+Comparador <|-- ComparadorMayor
+class ComparadorMayor {
+    - {static} INSTANCE : ComparadorMayor
+    - ComparadorMayor()
+    + getInstance(): ComparadorMayor
+}
+
+' Used design patterns: Singleton y Factory Method.
+Comparador <|-- ComparadorMenor
+class ComparadorMenor {
+    - {static} INSTANCE : ComparadorMenor
+    - ComparadorMenor()
+    + getInstance(): ComparadorMenor
+}
+
+' Used design patterns: Singleton y Factory Method.
+Comparador <|-- ComparadorIgual
+class ComparadorIgual {
+    - {static} INSTANCE : ComparadorIgual
+    - ComparadorIgual()
+    + getInstance(): ComparadorIgual
+}
+
+' -------------------------------------------------------------------
+
+' Used design pattern: Strategy.
+interface CriterioOrdenamiento {
+    + {abstract} compare(seguro1 : Seguro, seguro2 : Seguro) : int
+}
+
+' Used design patterns: Singleton y Factory Method.
+CriterioOrdenamiento <|.. OrdenarPorDNI
+class OrdenarPorDNI {
+    - {static} INSTANCE : OrdenarPorDNI
+    - OrdenarPorDNI()
+    + getInstance() : OrdenarPorDNI
+}
+
+' Used design patterns: Singleton y Factory Method.
+CriterioOrdenamiento <|.. OrdenarPorNroPoliza
+class OrdenarPorNroPoliza {
+    - {static} INSTANCE : OrdenarPorNroPoliza
+    - OrdenarPorNroPoliza()
+    + getInstance() : OrdenarPorNroPoliza
+}
+
+' Used design patterns: Singleton y Factory Method.
+CriterioOrdenamiento <|.. OrdenarPorMontoAsegurado
+class OrdenarPorMontoAsegurado {
+    - {static} INSTANCE : OrdenarPorMontoAsegurado
+    - OrdenarPorMontoAsegurado()
+    + getInstance() : OrdenarPorMontoAsegurado
+}
+
+' Used design pattern: Decorator.
+CriterioOrdenamiento <|.. OrdenarCombinado
+class OrdenarCombinado {
+    - primerCriterio : CriterioOrdenamiento
+    - segundoCriterio : CriterioOrdenamiento
+}
+
+@enduml
