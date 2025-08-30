@@ -1,38 +1,42 @@
 ﻿@startuml classDiagram
 
+' Used design pattern: Singleton.
 class Sistema {
-
     - socios : List<Socio>
-
+    - {static} INSTANCE : Sistema
     + getListadoSocios(criterio : CriterioSocio, orden : Orden) : List<Socio>
 }
 
-class Socio {
+' --------------------------------------------------------------------
 
+class Socio {
+    - edad : int
     - nombre : String
     - apellido : String
-    - edad : int
     - ultimaCuotaPaga : boolean
-    - alquileres : List<Alquileres>
-
+    - alquileres : List<Alquiler>
+    + getEdad() : int
     + getNombre() : String
     + getApellido() : String
-    + getEdad() : String
     + tieneUltimaCuotaPaga() : boolean
-    + getAlquileres(criterio : CriterioAlquiler) : List<Alquileres> 
     + getNumeroAlquileres(criterio : CriterioAlquiler) : int
+    + getAlquileres(criterio : CriterioAlquiler) : List<Alquiler> 
 }
 
-class Alquiler {
+' --------------------------------------------------------------------
 
+class Alquiler {
     - ID : int
     - monto : double
     - fecha : LocalDate
-
     + getID() : int
+    + getMonto() : double
     + getFecha() : LocalDate
 }
 
+' --------------------------------------------------------------------
+
+' Used design pattern: Strategy.
 abstract class CriterioSocio {
     + {abstract} cumple(socio : Socio) : boolean
 }
@@ -49,35 +53,54 @@ class CriterioEdad {
 
 CriterioSocio <|-- CriterioSobreAlquiler
 class CriterioSobreAlquiler {
-    - criterio : CriterioSobreAlquiler
+    - criterioAlquiler : CriterioAlquiler
 }
 
+' Used design pattern: Decorator.
 CriterioSocio <|-- CriterioCombinado
 class CriterioCombinado {
-    - primerCriterio : CriterioUsuario
-    - segundoCriterio : CriterioUsuario
+    - primerCriterio : CriterioSocio
+    - segundoCriterio : CriterioSocio
 }
 
+CriterioCombinado <|-- CriterioCombinadoAnd
+class CriterioCombinadoAnd {
+}
+
+CriterioCombinado <|-- CriterioCombinadoOr
+class CriterioCombinadoOr {
+}
+
+' --------------------------------------------------------------------
+
+' Used design pattern: Strategy.
 abstract class CriterioAlquiler {
     + {abstract} cumple(alquiler : Alquiler) : boolean
 }
 
-CriterioAlquiler <|-- CriteriaCanchaAlquilada
-abstract class CriterioCanchaAlquilada {
+CriterioAlquiler <|-- CriterioCanchaAlquilada
+class CriterioCanchaAlquilada {
     - IDCancha : int
     - nroAlquileres : int
     - comparador : Comparador
 }
 
-CriterioAlquiler <|-- CriteriaMontoPagado
-abstract class CriterioMontoPagado {
+CriterioAlquiler <|-- CriterioMontoPagado
+class CriterioMontoPagado {
     - monto : double
     - comparador : Comparador
 }
 
-Comparator <|.. Orden
+' --------------------------------------------------------------------
+
+' Used design pattern: Strategy.
 abstract class Orden {
     + {abstract} compare(s1, s2 : Socio) : int
+}
+
+' Used design pattern: Singleton.
+Orden <|-- OrdenAlfabetico
+class OrdenAlfabetico {
 }
 
 Orden <|-- OrdenEdad
@@ -85,11 +108,15 @@ class OrdenEdad {
     - comparador : Comparador
 }
 
+' --------------------------------------------------------------------
+
+' Used design pattern: Strategy.
 abstract class Comparador {
     + {abstract} comparar(primerValor, segundoValor: int) : boolean
     + {abstract} comparar(primerValor, segundoValor: double) : boolean
 }
 
+' Used design patterns: Singleton y Factory Method.
 Comparador <|-- ComparadorMayor
 class ComparadorMayor {
     - {static} INSTANCE : ComparadorMayor
@@ -97,6 +124,7 @@ class ComparadorMayor {
     + getInstance(): ComparadorMayor
 }
 
+' Used design patterns: Singleton y Factory Method.
 Comparador <|-- ComparadorMenor
 class ComparadorMenor {
     - {static} INSTANCE : ComparadorMenor
@@ -104,6 +132,7 @@ class ComparadorMenor {
     + getInstance(): ComparadorMenor
 }
 
+' Used design patterns: Singleton y Factory Method.
 Comparador <|-- ComparadorIgual
 class ComparadorIgual {
     - {static} INSTANCE : ComparadorIgual

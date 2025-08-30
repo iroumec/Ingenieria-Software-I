@@ -21,8 +21,6 @@
 
 ## Theory
 
----
-
 Hay patrones que son exactamente lo mismo. Solo cambia el contexto o ámbito de aplicación.
 
 ---
@@ -54,3 +52,11 @@ Cuando se usa `getInstance()`, técnicamente se está usando un _factory method_
 Entonces: **todo Singleton con getInstance() también usa Factory Method, pero no todo Factory Method es Singleton**.
 
 Si una clase no guarda estado, puede ser `Singleton`.
+
+---
+
+### No toda clase abstracta o interfaz implica `Template Method`
+
+El `Template Method` ocurre específicamente cuando un método en la clase abstracta define un algoritmo completo, pero delega al menos un paso abstracto a las subclases para que lo implementen. **La clave es que el método concreto de la clase abstracta llama internamente a métodos abstractos; ahí es donde está el _template_**.
+
+Si la clase abstracta solo declara métodos sin implementar ninguno, eso no es `Template Method`, es simplemente una abstracción normal.
