@@ -4,8 +4,8 @@ Este repositorio tiene el objetivo de compartir con mis compañeros de cursada m
 
 ## Estado de los ejercicios
 
-- T1: (WIP)
-  - E1 (WIP)
+- T1: (_Completed_)
+  - E1 (_Finished_)
   - E2 (_Finished_)
   - E3 (_Finished_)
   - E4 (_Finished_)
