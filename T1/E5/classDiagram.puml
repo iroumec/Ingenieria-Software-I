@@ -1,47 +1,59 @@
 ﻿@startuml classDiagram
 
-class Candidato {
+class Sistema {
+    - candidatos : List<Candidato>
+    - puntosDeVotacion : List<PuntoDeVotacion>
+    + getListadoCandidatos(c : CriterioOrdenamientoCandidato) : List<Candidato>
+}
 
+' --------------------------------------------------------------------
+
+class Candidato {
     - nombre : String
     - partidoPolitico : String
     - agrupacion : String
 }
 
-class PuntoDeVotacion {
-    + getPorcentajeVotosCandidato(candidato : String) : double
-    + getPorcentajeVotosEnBlanco() : double
-    + getVotosEmitidos
+' -------------------------------------------------------------------
+
+' Used design pattern: Composite.
+interface PuntoDeVotacion {
+    + {abstract} getVotosEmitidos() : int
+    + {abstract} getPorcentajeVotosEnBlanco() : double
+    + {abstract} getPorcentajeVotosCandidato(candidato : String) : double
 }
 
-PuntoDeVotacion <|-- Espacio
+PuntoDeVotacion <|.. Espacio
 class Espacio {
     - puntosDeVotacion : List<PuntoDeVotacion>
 }
 
-PuntoDeVotacion <|-- Mesa
+PuntoDeVotacion <|.. Mesa
 class Mesa {
-    - padron : List<Long>
     - votos : List<Voto>
-
-    + seHallaEnPadron(DNI : Long) : boolean
+    - padron : List<Integer>
+    + seHallaEnPadron(DNI : int) : boolean
 }
+
+' -------------------------------------------------------------------
 
 class Voto {
-
-    - candidato : String
-    ' Un voto en blanco es simplemente un voto en el que el candidato está vacío.
     - hora : LocalTime
-
-    + votaPorCandidato(@Nullable candidato : String) : boolean
+    - candidato : Candidato
+    + votaPorCandidato(@Nullable candidato : Candidato) : boolean
 }
+' Un voto en blanco es simplemente un voto en el que el candidato está vacío.
 
+' -------------------------------------------------------------------
+
+' Used design pattern: Strategy.
 abstract class CriterioBusqueda {
     + {abstract} cumple(voto : Voto): boolean
 }
 
 CriterioBusqueda <|-- CriterioCandidato
 class CriterioCandidato {
-    - @Nullable candidato : String
+    - @Nullable candidato : Candidato
 }
 
 CriterioBusqueda <|-- CriterioHora
@@ -55,11 +67,11 @@ class CriterioNot {
     - criterio : CriterioBusqueda
 }
 
+' Used design pattern: Decorator.
 CriterioBusqueda <|-- CriterioCombinado
 class CriterioCombinado {
     - primerCriterio : CriterioBusqueda
     - segundoCriterio: CriterioBusqueda
-    - operadorLogico: OperadorLogico
 }
 
 CriterioCombinado <|-- CriterioCombinadoAnd
@@ -70,11 +82,15 @@ CriterioCombinado <|-- CriterioCombinadoOr
 class CriterioCombinadoOr {
 }
 
+' -------------------------------------------------------------------
+
+' Used design pattern: Strategy.
 abstract class Comparador {
     + {abstract} comparar(primerValor, segundoValor: int) : boolean
     + {abstract} comparar(primerValor, segundoValor: double) : boolean
 }
 
+' Used design patterns: Singleton y Factory Method.
 Comparador <|-- ComparadorMayor
 class ComparadorMayor {
     - {static} INSTANCE : ComparadorMayor
@@ -82,6 +98,7 @@ class ComparadorMayor {
     + getInstance(): ComparadorMayor
 }
 
+' Used design patterns: Singleton y Factory Method.
 Comparador <|-- ComparadorMenor
 class ComparadorMenor {
     - {static} INSTANCE : ComparadorMenor
@@ -89,11 +106,51 @@ class ComparadorMenor {
     + getInstance(): ComparadorMenor
 }
 
+' Used design patterns: Singleton y Factory Method.
 Comparador <|-- ComparadorIgual
 class ComparadorIgual {
     - {static} INSTANCE : ComparadorIgual
     - ComparadorIgual()
     + getInstance(): ComparadorIgual
 }
+
+' -------------------------------------------------------------------
+
+' Used design pattern: Strategy.
+interface CriterioOrdenamientoCandidato {
+    + {abstract} compare(c1 : Candidato, c2 : Candidato) : int
+}
+
+' Used design pattern: Singleton y Factory Method.
+CriterioOrdenamientoCandidato <|.. OrdenarPorPartido
+class OrdenarPorPartido {
+    - {static} INSTANCE : OrdenarPorPartido
+    - OrdenarPorPartido()
+    + getInstance() : OrdenarPorPartido
+}
+
+' Used design pattern: Singleton y Factory Method.
+CriterioOrdenamientoCandidato <|.. OrdenarPorAgrupacion
+class OrdenarPorAgrupacion {
+    - {static} INSTANCE : OrdenarPorAgrupacion
+    - OrdenarPorAgrupacion()
+    + getInstance() : OrdenarPorAgrupacion
+}
+
+' Used design pattern: Singleton y Factory Method.
+CriterioOrdenamientoCandidato <|.. OrdenarPorNombre
+class OrdenarPorNombre {
+    - {static} INSTANCE : OrdenarPorNombre
+    - OrdenarPorNombre()
+    + getInstance() : OrdenarPorNombre
+}
+
+' Used design pattern: Decorator.
+CriterioOrdenamientoCandidato <|.. OrdenarCombinado
+class OrdenarCombinado {
+    - primerCriterio : CriterioOrdenamientoCandidato
+    - segundoCriterio : CriterioOrdenamientoCandidato
+}
+
 
 @enduml
