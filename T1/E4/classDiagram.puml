@@ -1,35 +1,36 @@
 ﻿@startuml classDiagram
 
+' Used design pattern: Singleton.
 class Sistema {
-
     - peliculas : List<Pelicula>
-    - {field} {static} INSTANCE : OperadorAnd
-
-    - {method} Sistema()
-    + {method} getInstance(): Sistema
+    - {static} INSTANCE : Sistema
     + buscar(criterio : Criterio) : List<Pelicula>
 }
 
+' -------------------------------------------------------------------
+
 class Pelicula {
     - titulo : String
-    - sinopsis : String
-    - generos : List<String>
-    - director : String
-    - actores : List<String>
     - anioEstreno: int
     - duracion: double
     - edadMinima : int
-
-    + esDirigidaPor(director : String) : boolean
-    + participaActor(actor : String) : boolean
-    + tituloContienePalabra(palabra : String) : boolean
+    - director : String
+    - sinopsis : String
+    - generos : List<String>
+    - actores : List<String>
+    + getEdadMinima() : int
     + getAnioEstreno() : int
     + getDuracion() : double
-    + getEdadMinima() : int
+    + participaActor(actor : String) : boolean
     + contieneGenero(genero : String) : boolean
     + esRentable(criterio : Criterio) : boolean
+    + esDirigidaPor(director : String) : boolean
+    + tituloContienePalabra(palabra : String) : boolean
 }
 
+' -------------------------------------------------------------------
+
+' Used design pattern: Strategy.
 abstract class CriterioBusqueda {
     + {abstract} cumple(pelicula : Pelicula) : boolean
 }
@@ -77,46 +78,54 @@ class CriterioNot {
     - criterio : CriterioBusqueda
 }
 
+' Used design pattern: Decorator.
 CriterioBusqueda <|-- CriterioCombinado
 class CriterioCombinado {
     - primerCriterio : CriterioBusqueda
-    - segundoCriterio : CriterioBusqueda
-    - operadorLogico : OperadorLogico
+    - segundoCriterio: CriterioBusqueda
 }
 
+CriterioCombinado <|-- CriterioCombinadoAnd
+class CriterioCombinadoAnd {
+}
+
+CriterioCombinado <|-- CriterioCombinadoOr
+class CriterioCombinadoOr {
+}
+
+' -------------------------------------------------------------------
+
+' Used design pattern: Strategy.
 abstract class Comparador {
     + {abstract} comparar(primerValor, segundoValor: int) : boolean
     + {abstract} comparar(primerValor, segundoValor: double) : boolean
 }
 
+' Used design patterns: Singleton y Factory Method.
+' A diferencia de Sistema, estos usan "getInstance()".
+' No hay ninguna razón particular detrás de esto más allá que la
+' de mostrar otra forma de Singleton.
 Comparador <|-- ComparadorMayor
 class ComparadorMayor {
+    - {static} INSTANCE : ComparadorMayor
+    - ComparadorMayor()
+    + getInstance(): ComparadorMayor
 }
 
+' Used design patterns: Singleton y Factory Method.
 Comparador <|-- ComparadorMenor
 class ComparadorMenor {
+    - {static} INSTANCE : ComparadorMenor
+    - ComparadorMenor()
+    + getInstance(): ComparadorMenor
 }
 
+' Used design patterns: Singleton y Factory Method.
 Comparador <|-- ComparadorIgual
 class ComparadorIgual {
-}
-
-abstract class OperadorLogico {
-    + {abstract} evaluar(primerValor, segundoValor: boolean) : boolean
-}
-
-OperadorLogico <|-- OperadorAnd
-class OperadorAnd {
-    - {field} {static} INSTANCE : OperadorAnd
-    - {method} OperadorAnd()
-    + {method} getInstance(): OperadorAnd
-}
-
-OperadorLogico <|-- OperadorOr
-class OperadorOr {
-    - {field} {static} INSTANCE : OperadorOr
-    - {method} OperadorOr()
-    + {method} getInstance(): OperadorOr
+    - {static} INSTANCE : ComparadorIgual
+    - ComparadorIgual()
+    + getInstance(): ComparadorIgual
 }
 
 @enduml
