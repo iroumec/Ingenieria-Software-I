@@ -19,6 +19,6 @@ No asignado.
 
 ### T3
 
-- E1
-- E2
+- E1 (Completado). Consultar.
+- E2 (Completado). Consultar.
 - E3
