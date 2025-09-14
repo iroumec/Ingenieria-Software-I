@@ -4,10 +4,21 @@ Este repositorio tiene el objetivo de compartir con mis compañeros de cursada m
 
 ## Estado de los ejercicios
 
-- T1: (_Completed_)
-  - E1 (_Finished_)
-  - E2 (_Finished_)
-  - E3 (_Finished_)
-  - E4 (_Finished_)
-  - E5 (_Finished_)
-  - E6 (_Finished_)
+### T1
+
+- E1 (_Finished_)
+- E2 (_Finished_)
+- E3 (_Finished_)
+- E4 (_Finished_)
+- E5 (_Finished_)
+- E6 (_Finished_)
+
+### T2
+
+No asignado.
+
+### T3
+
+- E1
+- E2
+- E3
